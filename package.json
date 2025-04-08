@@ -1,0 +1,21 @@
+{
+  "name": "expensetracker",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "jest",
+    "start": "npx parcel index.html",
+    "build": "npx parcel build index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "(https://github.com/annlyn4yeo/expensetracker.git)"
+  },
+  "author": "Annlyn",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "parcel": "^2.14.4",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  }
+}

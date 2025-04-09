@@ -23,7 +23,6 @@ export const SpendingChart = ({ transactions = [] }) => {
       <h2 className="text-lg font-semibold mb-4 text-gray-700">
         Spending Overview
       </h2>
-      {console.log("Transactions for chart:", transactions)}
       <div className="h-64 w-full">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
@@ -35,7 +34,7 @@ export const SpendingChart = ({ transactions = [] }) => {
               cy="50%"
               innerRadius={60}
               outerRadius={90}
-              paddingAngle={5}
+              paddingAngle={1}
               label={({ name, percent }) =>
                 `${name}: ${(percent * 100).toFixed(0)}%`
               }

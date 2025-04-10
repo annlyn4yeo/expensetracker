@@ -23,7 +23,7 @@ export const TransactionList = ({ transactions = [], onDelete }) => {
                   txn.amount >= 0 ? "text-green-600" : "text-red-600"
                 }`}
               >
-                {txn.amount >= 0 ? "+" : "-"}${Math.abs(txn.amount).toFixed(2)}
+                {txn.amount >= 0 ? "+" : "-"}₹{Math.abs(txn.amount).toFixed(2)}
               </span>
             </div>
 

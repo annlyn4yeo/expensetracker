@@ -56,7 +56,7 @@ export const TransactionForm = ({ onAdd }) => {
         <button
           type="button"
           onClick={() => handleSubmit(false)} // Income
-          className="flex-1 bg-green-500 text-white py-2 rounded hover:bg-green-600 transition duration-200"
+          className="flex-1 bg-green-500 text-white py-2 rounded hover:bg-green-600 transition duration-200 cursor-pointer"
           aria-label="Add Income"
         >
           Add Income
@@ -64,7 +64,7 @@ export const TransactionForm = ({ onAdd }) => {
         <button
           type="button"
           onClick={() => handleSubmit(true)} // Expense
-          className="flex-1 bg-red-500 text-white py-2 rounded hover:bg-red-600 transition duration-200"
+          className="flex-1 bg-red-500 text-white py-2 rounded hover:bg-red-600 transition duration-200 cursor-pointer"
           aria-label="Add Expense"
         >
           Add Expense

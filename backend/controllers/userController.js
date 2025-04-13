@@ -38,6 +38,25 @@ export const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
+export const loginUser = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await User.findOne({ email });
+
+  if (user && (await bcrypt.compare(password, user.password))) {
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      token: generateToken(user._id),
+    });
+  } else {
+    res.status(401);
+    return res.status(401).json({ message: "Invalid email or password." });
+  }
+});
+
 export const getAllUsers = async (req, res) => {
   const users = await User.find().select("-password");
   res.json(users);

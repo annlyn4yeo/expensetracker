@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 
 export const SignupForm = ({ onClose }) => {
   const [form, setForm] = useState({
@@ -20,18 +21,16 @@ export const SignupForm = ({ onClose }) => {
   const isStrongPassword = (password) =>
     /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/.test(password);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {};
 
-    // Required field check
     Object.entries(form).forEach(([key, value]) => {
       if (!value.trim()) {
         newErrors[key] = "This field is required.";
       }
     });
 
-    // Field-specific validations
     if (form.email && !isValidEmail(form.email)) {
       newErrors.email = "Please enter a valid email address.";
     }
@@ -54,8 +53,23 @@ export const SignupForm = ({ onClose }) => {
       return;
     }
 
-    console.log("Signup data:", form);
-    onClose();
+    try {
+      const { data } = await axios.post(
+        "http://localhost:3000/api/users/register",
+        {
+          name: form.name,
+          email: form.email,
+          password: form.password,
+        }
+      );
+      onClose();
+    } catch (err) {
+      console.error(
+        "❌ Error registering user:",
+        err.response?.data || err.message
+      );
+      setErrors({ email: "User registration failed. Try another email." });
+    }
   };
 
   return (

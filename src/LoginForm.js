@@ -15,8 +15,9 @@ export const LoginForm = ({ onClose }) => {
 
   const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     const newErrors = {};
 
     if (!form.email.trim()) {
@@ -34,8 +35,45 @@ export const LoginForm = ({ onClose }) => {
       return;
     }
 
-    console.log("Login data:", form);
-    onClose();
+    try {
+      const res = await fetch("http://localhost:3000/api/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      let data = {};
+
+      try {
+        data = await res.json();
+      } catch (err) {
+        console.error("Failed to parse JSON:", err);
+      }
+
+      if (!res.ok) {
+        const message = data?.message || "Invalid email or password.";
+        setErrors({ password: message });
+        return;
+      }
+
+      // Optional: Check if user object/token exists in response
+      if (!data || !data.token || !data.email) {
+        console.error("Unexpected response structure:", data);
+        setErrors({ password: "Unexpected server response." });
+        return;
+      }
+
+      console.log("Login successful:", true);
+      console.log("User data:", data);
+      onClose();
+    } catch (error) {
+      console.error("Error during login:", error);
+      setErrors({
+        password: "Something went wrong. Please try again later.",
+      });
+    }
   };
 
   return (

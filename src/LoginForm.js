@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export const LoginForm = ({ onClose }) => {
+export const LoginForm = ({ onClose, onLogin }) => {
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -67,6 +67,7 @@ export const LoginForm = ({ onClose }) => {
 
       console.log("Login successful:", true);
       console.log("User data:", data);
+      onLogin(data);
       onClose();
     } catch (error) {
       console.error("Error during login:", error);

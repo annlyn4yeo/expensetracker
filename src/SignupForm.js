@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 
-export const SignupForm = ({ onClose }) => {
+export const SignupForm = ({ onClose, onSignup }) => {
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -19,7 +19,9 @@ export const SignupForm = ({ onClose }) => {
   const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const isStrongPassword = (password) =>
-    /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/.test(password);
+    /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()_+={}\[\]:;"'<>,.?/\\|`~^-]{6,}$/.test(
+      password
+    );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -63,6 +65,7 @@ export const SignupForm = ({ onClose }) => {
         }
       );
       onClose();
+      onSignup(data);
     } catch (err) {
       console.error(
         "❌ Error registering user:",

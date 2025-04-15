@@ -2,13 +2,16 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { Header } from "./src/Header";
 import { Body } from "./src/Body";
+import { AuthProvider } from "./src/context/AuthContext";
 
 const AppComponent = () => {
   return (
-    <div id="app">
-      <Header />
-      <Body />
-    </div>
+    <AuthProvider>
+      <div id="app">
+        <Header />
+        <Body />
+      </div>
+    </AuthProvider>
   );
 };
 

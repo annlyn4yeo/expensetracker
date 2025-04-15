@@ -1,7 +1,10 @@
 import { useState } from "react";
 import axios from "axios";
+import { useAuth } from "./context/AuthContext.js";
 
-export const SignupForm = ({ onClose, onSignup }) => {
+export const SignupForm = ({ onClose }) => {
+  const { login } = useAuth();
+
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -25,16 +28,15 @@ export const SignupForm = ({ onClose, onSignup }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const newErrors = {};
 
     Object.entries(form).forEach(([key, value]) => {
-      if (!value.trim()) {
-        newErrors[key] = "This field is required.";
-      }
+      if (!value.trim()) newErrors[key] = "This field is required.";
     });
 
     if (form.email && !isValidEmail(form.email)) {
-      newErrors.email = "Please enter a valid email address.";
+      newErrors.email = "Enter a valid email.";
     }
 
     if (form.password && !isStrongPassword(form.password)) {
@@ -42,11 +44,7 @@ export const SignupForm = ({ onClose, onSignup }) => {
         "Password must be at least 6 characters long and contain both letters and numbers.";
     }
 
-    if (
-      form.password &&
-      form.confirmPassword &&
-      form.password !== form.confirmPassword
-    ) {
+    if (form.password !== form.confirmPassword) {
       newErrors.confirmPassword = "Passwords do not match.";
     }
 
@@ -64,13 +62,11 @@ export const SignupForm = ({ onClose, onSignup }) => {
           password: form.password,
         }
       );
+
+      login(data);
       onClose();
-      onSignup(data);
     } catch (err) {
-      console.error(
-        "❌ Error registering user:",
-        err.response?.data || err.message
-      );
+      console.error("Registration error:", err.response?.data || err.message);
       setErrors({ email: "User registration failed. Try another email." });
     }
   };

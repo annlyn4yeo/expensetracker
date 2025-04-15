@@ -1,12 +1,10 @@
 import { useState } from "react";
+import { useAuth } from "./context/AuthContext.js";
 
-export const LoginForm = ({ onClose, onLogin }) => {
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-  });
-
+export const LoginForm = ({ onClose }) => {
+  const [form, setForm] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
+  const { login } = useAuth();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -20,15 +18,11 @@ export const LoginForm = ({ onClose, onLogin }) => {
 
     const newErrors = {};
 
-    if (!form.email.trim()) {
-      newErrors.email = "This field is required.";
-    } else if (!isValidEmail(form.email)) {
-      newErrors.email = "Please enter a valid email address.";
-    }
+    if (!form.email.trim()) newErrors.email = "This field is required.";
+    else if (!isValidEmail(form.email))
+      newErrors.email = "Enter a valid email.";
 
-    if (!form.password.trim()) {
-      newErrors.password = "This field is required.";
-    }
+    if (!form.password.trim()) newErrors.password = "This field is required.";
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -38,42 +32,22 @@ export const LoginForm = ({ onClose, onLogin }) => {
     try {
       const res = await fetch("http://localhost:3000/api/users/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
 
-      let data = {};
-
-      try {
-        data = await res.json();
-      } catch (err) {
-        console.error("Failed to parse JSON:", err);
-      }
+      const data = await res.json();
 
       if (!res.ok) {
-        const message = data?.message || "Invalid email or password.";
-        setErrors({ password: message });
+        setErrors({ password: data?.message || "Invalid email or password." });
         return;
       }
 
-      // Optional: Check if user object/token exists in response
-      if (!data || !data.token || !data.email) {
-        console.error("Unexpected response structure:", data);
-        setErrors({ password: "Unexpected server response." });
-        return;
-      }
-
-      console.log("Login successful:", true);
-      console.log("User data:", data);
-      onLogin(data);
+      login(data);
       onClose();
     } catch (error) {
-      console.error("Error during login:", error);
-      setErrors({
-        password: "Something went wrong. Please try again later.",
-      });
+      console.error("Login error:", error);
+      setErrors({ password: "Something went wrong. Try again later." });
     }
   };
 

@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 
 import userRoutes from "./routes/userRoutes.js";
+import transactionRoutes from "./routes/transactionRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -22,6 +23,7 @@ mongoose
   .catch((err) => console.error("MongoDB connection error:", err));
 
 app.use("/api/users", userRoutes);
+app.use("/api/transactions", transactionRoutes);
 
 app.get("/", (req, res) => {
   res.send("API is running...");

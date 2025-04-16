@@ -36,6 +36,7 @@ export const TransactionForm = ({ onAdd }) => {
       description,
       amount: signedAmount,
       date: date.toISOString(),
+      type: isExpense ? "expense" : "income",
     };
 
     onAdd(newTransaction);

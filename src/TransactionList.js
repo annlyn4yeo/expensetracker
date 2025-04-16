@@ -36,7 +36,7 @@ export const TransactionList = ({ transactions = [], onDelete }) => {
             <ul className="space-y-2">
               {grouped[date].map((txn) => (
                 <li
-                  key={txn.id}
+                  key={txn._id}
                   className={`flex justify-between items-center p-2 rounded border ${
                     txn.amount >= 0 ? "border-green-300" : "border-red-300"
                   }`}
@@ -54,7 +54,7 @@ export const TransactionList = ({ transactions = [], onDelete }) => {
                   </div>
 
                   <button
-                    onClick={() => onDelete(txn.id)}
+                    onClick={() => onDelete(txn._id)}
                     className="text-gray-400 hover:text-red-500 transition cursor-pointer"
                     aria-label="Delete transaction"
                     title="Delete"

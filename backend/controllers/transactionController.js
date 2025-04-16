@@ -29,3 +29,22 @@ export const getUserTransactions = async (req, res) => {
     res.status(500).json({ message: "Failed to fetch transactions." });
   }
 };
+
+export const deleteTransaction = async (req, res) => {
+  try {
+    const txn = await Transaction.findOneAndDelete({
+      _id: req.params.id,
+      user: req.user._id,
+    });
+
+    if (!txn) {
+      return res
+        .status(404)
+        .json({ message: "Transaction not found or unauthorized" });
+    }
+
+    res.json({ message: "Transaction deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to delete transaction." });
+  }
+};

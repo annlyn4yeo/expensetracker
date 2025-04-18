@@ -71,8 +71,14 @@ export const Body = () => {
   };
 
   useEffect(() => {
+    if (!token) {
+      setTransactions([]);
+      setLoading(false);
+      return;
+    }
+
     fetchTransactions();
-  }, [token]); // re-fetch when token changes
+  }, [token]);
 
   return (
     <div className="body p-4 max-w-xl mx-auto">

@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Modal } from "./Modal";
-import { SignupForm } from "./SignupForm";
-import { LoginForm } from "./LoginForm";
+import { Modal } from "./Modal.js";
+import { SignupForm } from "./SignupForm.js";
+import { LoginForm } from "./LoginForm.js";
 import { useAuth } from "./context/AuthContext.js";
 
 export const Header = () => {
